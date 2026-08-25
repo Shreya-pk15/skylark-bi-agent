@@ -95,6 +95,15 @@ def load_board_data(
         missing_sector = wo["Sector"].isna().sum() if "Sector" in wo.columns else 0
         if missing_sector:
             notes.append(f"{missing_sector} work order(s) have no Sector set on the board.")
+        for column in ["Execution Status", "Data Delivery Date", "Last invoice date"]:
+            if column in wo.columns:
+                missing = int(wo[column].isna().sum())
+                if missing:
+                    notes.append(f"{missing} work order(s) have no {column} set on the board.")
+        if "Amount Receivable (Masked)" in wo.columns:
+            negative_receivables = int((wo["Amount Receivable (Masked)"].fillna(0) < 0).sum())
+            if negative_receivables:
+                notes.append(f"{negative_receivables} work order(s) have negative receivables; review as source-data anomalies.")
 
     if not deals.empty:
         if "Sector/service" in deals.columns:
@@ -107,6 +116,11 @@ def load_board_data(
         missing_val = deals["Masked Deal value"].isna().sum() if "Masked Deal value" in deals.columns else 0
         if missing_val:
             notes.append(f"{missing_val} deal(s) have no deal value on the board — excluded from revenue totals.")
+        for column in ["Sector/service", "Deal Status", "Deal Stage", "Tentative Close Date"]:
+            if column in deals.columns:
+                missing = int(deals[column].isna().sum())
+                if missing:
+                    notes.append(f"{missing} deal(s) have no {column} set on the board.")
 
     result = BoardData(work_orders=wo, deals=deals, quality_notes=notes)
     _CACHE[cache_key] = result

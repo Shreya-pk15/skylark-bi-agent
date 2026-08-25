@@ -118,6 +118,23 @@ streamlit run app.py
 - "How reliable is this data — any gaps I should know about?"
 - "What's the status of the Sakura deal?"
 
+The agent also supports natural-language follow-ups and these question families:
+
+- **Pipeline:** open/won/dead/on-hold counts, total and average deal value, win
+  rate, deal stage, sector, owner, product, and close-date windows.
+- **Revenue:** invoiced, billed, collected, receivable, collection rate, billing
+  status, sector, and execution-status filters.
+- **Operations:** execution-status counts, paused/not-started work, sector
+  comparisons, missing delivery dates, and missing invoice dates.
+- **Search:** deal, client, sector, status, owner, and keyword lookups across
+  both boards.
+- **Data health:** missing sectors/values/statuses/dates, negative receivable
+  anomalies, and caveats attached to every analytical result.
+
+It states assumptions for relative dates, asks for clarification when a
+question is genuinely ambiguous, and says when a requested field is not present
+on the connected boards. Monetary values are masked/scaled Rupees.
+
 ## Tests
 
 `scripts/clean_data.py` and the tool functions were exercised directly

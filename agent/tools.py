@@ -33,6 +33,7 @@ TOOL_DEFINITIONS = [
                 "close_after": {"type": ["string", "null"], "description": "ISO date (YYYY-MM-DD). Filters Tentative Close Date >= this."},
                 "close_before": {"type": ["string", "null"], "description": "ISO date (YYYY-MM-DD). Filters Tentative Close Date <= this."},
                 "deal_status": {"type": ["string", "null"], "description": "Open, Won, Dead, On Hold. Omit or null for all."},
+                "deal_stage": {"type": ["string", "null"], "description": "Optional exact Deal Stage filter."},
             },
         },
     },
@@ -48,6 +49,7 @@ TOOL_DEFINITIONS = [
             "properties": {
                 "sector": {"type": ["string", "null"], "description": "e.g. 'Mining'. Omit or null for all sectors."},
                 "billing_status": {"type": ["string", "null"], "description": "Billed, Partially Billed, Update Required, Stuck, Not Billable."},
+                "execution_status": {"type": ["string", "null"], "description": "Optional exact Execution Status filter, such as Completed, Ongoing, Not Started, or Pause/Struck."},
             },
         },
     },
@@ -62,6 +64,7 @@ TOOL_DEFINITIONS = [
             "type": "object",
             "properties": {
                 "sector": {"type": ["string", "null"], "description": "e.g. 'Mining', 'Powerline'. Omit or null for all sectors."},
+                "execution_status": {"type": ["string", "null"], "description": "Optional exact status filter, such as Completed, Ongoing, Not Started, or Pause/Struck."},
             },
         },
     },
@@ -106,7 +109,7 @@ def _filter_sector(df: pd.DataFrame, col: str, sector: str | None) -> pd.DataFra
     return df[df[col].str.lower() == sector.lower()]
 
 
-def get_pipeline_summary(board: BoardData, sector=None, close_after=None, close_before=None, deal_status=None):
+def get_pipeline_summary(board: BoardData, sector=None, close_after=None, close_before=None, deal_status=None, deal_stage=None):
     df = board.deals.copy()
     caveats = list(board.quality_notes)
     if df.empty:
@@ -115,6 +118,8 @@ def get_pipeline_summary(board: BoardData, sector=None, close_after=None, close_
     df = _filter_sector(df, "Sector/service", sector)
     if deal_status and "Deal Status" in df.columns:
         df = df[df["Deal Status"].str.lower() == deal_status.lower()]
+    if deal_stage and "Deal Stage" in df.columns:
+        df = df[df["Deal Stage"].str.lower() == deal_stage.lower()]
     if "Tentative Close Date" in df.columns:
         if close_after:
             df = df[df["Tentative Close Date"] >= pd.to_datetime(close_after)]
@@ -132,6 +137,9 @@ def get_pipeline_summary(board: BoardData, sector=None, close_after=None, close_
         if "Deal Status" in df.columns else []
     )
 
+    closed = df[df["Deal Status"].str.lower().isin(["won", "dead"])] if "Deal Status" in df.columns else df.iloc[0:0]
+    won = int((closed["Deal Status"].str.lower() == "won").sum()) if "Deal Status" in closed.columns else 0
+
     if missing_value_count:
         caveats.append(
             f"{missing_value_count} of {len(df)} matching deals have no deal value recorded "
@@ -142,6 +150,9 @@ def get_pipeline_summary(board: BoardData, sector=None, close_after=None, close_
         "data": {
             "deal_count": int(len(df)),
             "total_deal_value": float(total_value) if pd.notna(total_value) else 0,
+            "average_deal_value": float(total_value / (len(df) - missing_value_count)) if len(df) - missing_value_count else None,
+            "closed_deal_count": int(len(closed)),
+            "win_rate": float(won / len(closed)) if len(closed) else None,
             "by_stage": by_stage,
             "by_status": by_status,
         },
@@ -149,7 +160,7 @@ def get_pipeline_summary(board: BoardData, sector=None, close_after=None, close_
     }
 
 
-def get_revenue_summary(board: BoardData, sector=None, billing_status=None):
+def get_revenue_summary(board: BoardData, sector=None, billing_status=None, execution_status=None):
     df = board.work_orders.copy()
     caveats = list(board.quality_notes)
     if df.empty:
@@ -158,6 +169,8 @@ def get_revenue_summary(board: BoardData, sector=None, billing_status=None):
     df = _filter_sector(df, "Sector", sector)
     if billing_status and "Billing Status" in df.columns:
         df = df[df["Billing Status"].str.lower() == billing_status.lower()]
+    if execution_status and "Execution Status" in df.columns:
+        df = df[df["Execution Status"].str.lower() == execution_status.lower()]
 
     def col_sum(name):
         return float(df[name].sum(skipna=True)) if name in df.columns else None
@@ -166,6 +179,7 @@ def get_revenue_summary(board: BoardData, sector=None, billing_status=None):
     billed = col_sum("Billed Value in Rupees (Incl of GST.) (Masked)")
     collected = col_sum("Collected Amount in Rupees (Incl of GST.) (Masked)")
     receivable = col_sum("Amount Receivable (Masked)")
+    collection_rate = (collected / invoiced) if invoiced not in (None, 0) and collected is not None else None
 
     neg = int((df.get("Amount Receivable (Masked)", pd.Series(dtype=float)).fillna(0) < 0).sum())
     if neg:
@@ -186,18 +200,21 @@ def get_revenue_summary(board: BoardData, sector=None, billing_status=None):
             "total_billed": billed,
             "total_collected": collected,
             "total_receivable": receivable,
+            "collection_rate": collection_rate,
             "by_billing_status": by_billing_status,
         },
         "caveats": caveats,
     }
 
 
-def get_operational_metrics(board: BoardData, sector=None):
+def get_operational_metrics(board: BoardData, sector=None, execution_status=None):
     df = board.work_orders.copy()
     caveats = list(board.quality_notes)
     if df.empty:
         return {"data": {}, "caveats": caveats + ["Work Orders board returned no rows."]}
     df = _filter_sector(df, "Sector", sector)
+    if execution_status and "Execution Status" in df.columns:
+        df = df[df["Execution Status"].str.lower() == execution_status.lower()]
     by_status = (
         df.groupby("Execution Status").size().reset_index(name="count").to_dict("records")
         if "Execution Status" in df.columns else []
@@ -205,7 +222,11 @@ def get_operational_metrics(board: BoardData, sector=None):
     missing_status = int(df["Execution Status"].isna().sum()) if "Execution Status" in df.columns else 0
     if missing_status:
         caveats.append(f"{missing_status} work order(s) have no Execution Status set.")
-    return {"data": {"work_order_count": int(len(df)), "by_execution_status": by_status}, "caveats": caveats}
+    missing_delivery_date = int(df["Data Delivery Date"].isna().sum()) if "Data Delivery Date" in df.columns else None
+    missing_invoice_date = int(df["Last invoice date"].isna().sum()) if "Last invoice date" in df.columns else None
+    return {"data": {"work_order_count": int(len(df)), "by_execution_status": by_status,
+                      "missing_delivery_date_count": missing_delivery_date,
+                      "missing_invoice_date_count": missing_invoice_date}, "caveats": caveats}
 
 
 def get_sector_breakdown(board: BoardData):

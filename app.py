@@ -245,14 +245,14 @@ with c3:
     st.markdown("""
     <div class="kpi-card">
         <div class="kpi-title">Reasoning Engine</div>
-        <div class="kpi-val">ReAct Tool Agent</div>
+        <div class="kpi-val">Tool-Calling Agent</div>
     </div>
     """, unsafe_allow_html=True)
 with c4:
     st.markdown("""
     <div class="kpi-card">
         <div class="kpi-title">Data Health Guard</div>
-        <div class="kpi-val">Active QA Checks</div>
+        <div class="kpi-val">Completeness + Anomalies</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -268,27 +268,18 @@ if "agent" not in st.session_state:
 if "messages" not in st.session_state:
     st.session_state.messages = [
         {"role": "assistant", "content": (
-            "👋 **Hello! I'm your Skylark BI Decision Agent.**\n\n"
-            "I query live **Work Orders** and **Deals** boards on monday.com and can answer:\n\n"
-            "**📈 Sales Pipeline & Deals**\n"
-            "- *How is our pipeline looking for Mining this quarter?*\n"
-            "- *Which deals are still open and close before June?*\n"
-            "- *How many deals are Won vs Dead vs On Hold?*\n\n"
-            "**💰 Revenue, Billing & Receivables**\n"
-            "- *What is our total outstanding receivable right now?*\n"
-            "- *What is our cash collection rate across all sectors?*\n"
-            "- *Which sectors have stuck or partially billed work orders?*\n\n"
-            "**⚙️ Operations & Execution**\n"
-            "- *How many work orders are ongoing vs completed?*\n"
-            "- *Which projects are paused or not yet started in Renewables?*\n\n"
-            "**🌐 Cross-Sector Comparisons**\n"
-            "- *Give me an executive breakdown across all sectors.*\n"
-            "- *Compare Powerline vs Renewables — pipeline and revenue.*\n\n"
-            "**🔍 Client & Deal Lookup**\n"
-            "- *What is the status of the Sakura deal?*\n"
-            "- *Find all work orders for client code ABC.*\n\n"
-            "**🛡️ Data Quality**\n"
-            "- *How reliable is this data? Any gaps I should know about?*"
+            "👋 **Skylark BI Decision Agent**\n\n"
+            "Ask questions about live monday.com **Deals** and **Work Orders** data. "
+            "I can analyze pipeline, revenue, billing, receivables, operations, "
+            "sector performance, client records, and data quality.\n\n"
+            "Try:\n"
+            "- *How is our Mining pipeline this quarter?*\n"
+            "- *What is our collection rate and outstanding receivable?*\n"
+            "- *Compare Powerline and Renewables.*\n"
+            "- *Which work orders are paused or missing delivery dates?*\n"
+            "- *How reliable is the data?*\n\n"
+            "Follow-up questions are supported, including sector breakdowns, "
+            "comparisons, filters, and record searches."
         )}
     ]
 
@@ -341,15 +332,19 @@ with st.sidebar:
             ("🔢 All open deals — count & value", "How many deals are currently open and what is the total pipeline value?"),
             ("⛏️ Mining pipeline this quarter", "How is our pipeline looking for Mining this quarter?"),
             ("🏗️ Won vs Dead deals comparison", "Show me how many deals are Won vs Dead vs On Hold."),
+            ("🎯 Win rate and average deal", "What is our win rate and average deal value?"),
+            ("📅 Deals closing soon", "Which open deals have tentative close dates in the next 90 days?"),
         ],
         "💰 Revenue & Billing": [
             ("💵 Total receivable outstanding", "What is our total outstanding receivable right now?"),
             ("📊 Revenue & collection rate", "What is our revenue collection rate and total receivable outstanding?"),
             ("⚡ Renewables billing status", "What is the billing status for Renewables work orders?"),
+            ("🧾 Invoicing gaps", "Which work orders are missing an invoice date?"),
         ],
         "⚙️ Operations": [
             ("🔄 Ongoing vs completed work orders", "How many work orders are ongoing vs completed across all sectors?"),
             ("⏸️ Paused or stuck projects", "Which projects are paused or stuck right now?"),
+            ("🚚 Delivery date gaps", "How many work orders are missing a data delivery date?"),
             ("⚖️ Powerline vs Renewables briefing", "Give me a leadership update comparing Powerline and Renewables."),
         ],
         "🌐 Sector & Strategy": [
@@ -359,6 +354,7 @@ with st.sidebar:
         "🔍 Search & Data Health": [
             ("🛡️ Data health & caveats audit", "How reliable is our data right now? Any caveats?"),
             ("🔎 Search a deal or client", "What is the status of the Sakura deal?"),
+            ("🧭 Find matching records", "Find all records matching client code ABC."),
         ],
     }
     for group_label, prompts in prompt_groups.items():
