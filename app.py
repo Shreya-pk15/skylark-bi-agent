@@ -269,11 +269,26 @@ if "messages" not in st.session_state:
     st.session_state.messages = [
         {"role": "assistant", "content": (
             "👋 **Hello! I'm your Skylark BI Decision Agent.**\n\n"
-            "I query our live **Work Orders** and **Deals** boards on monday.com to answer strategic questions with verified metrics:\n\n"
-            "- 📈 **Pipeline:** *'How is our sales pipeline looking for Mining vs Construction?'*\n"
-            "- 💰 **Revenue & Cash:** *'What is our total receivable outstanding and collection rate?'*\n"
-            "- 📊 **Leadership Briefing:** *'Give me an executive comparison between Powerline and Renewables.'*\n"
-            "- 🛡️ **Data Health:** *'How reliable is this data right now? Any gaps?'*"
+            "I query live **Work Orders** and **Deals** boards on monday.com and can answer:\n\n"
+            "**📈 Sales Pipeline & Deals**\n"
+            "- *How is our pipeline looking for Mining this quarter?*\n"
+            "- *Which deals are still open and close before June?*\n"
+            "- *How many deals are Won vs Dead vs On Hold?*\n\n"
+            "**💰 Revenue, Billing & Receivables**\n"
+            "- *What is our total outstanding receivable right now?*\n"
+            "- *What is our cash collection rate across all sectors?*\n"
+            "- *Which sectors have stuck or partially billed work orders?*\n\n"
+            "**⚙️ Operations & Execution**\n"
+            "- *How many work orders are ongoing vs completed?*\n"
+            "- *Which projects are paused or not yet started in Renewables?*\n\n"
+            "**🌐 Cross-Sector Comparisons**\n"
+            "- *Give me an executive breakdown across all sectors.*\n"
+            "- *Compare Powerline vs Renewables — pipeline and revenue.*\n\n"
+            "**🔍 Client & Deal Lookup**\n"
+            "- *What is the status of the Sakura deal?*\n"
+            "- *Find all work orders for client code ABC.*\n\n"
+            "**🛡️ Data Quality**\n"
+            "- *How reliable is this data? Any gaps I should know about?*"
         )}
     ]
 
@@ -319,18 +334,39 @@ with st.sidebar:
     st.markdown("---")
     
     st.subheader("💡 Leadership Quick Prompts")
-    st.caption("Click any query to execute an instant executive briefing:")
-    quick_prompts = [
-        ("⚖️ Compare Powerline vs Renewables", "Give me a leadership update comparing Powerline and Renewables."),
-        ("💰 Revenue & Receivables Overview", "What is our revenue collection rate and total receivable outstanding?"),
-        ("⛏️ Mining vs Construction Pipeline", "How is our sales pipeline looking for Mining vs Construction?"),
-        ("🌐 Executive Sector Breakdown", "Give me an executive breakdown across all business sectors."),
-        ("🛡️ Data Health & Caveats Audit", "How reliable is our data right now? Any caveats?"),
-    ]
-    for label, qp in quick_prompts:
-        if st.button(label, key=f"btn_{label}", use_container_width=True):
-            st.session_state["queued_prompt"] = qp
-            st.rerun()
+    st.caption("Click any query for an instant briefing:")
+
+    prompt_groups = {
+        "📈 Pipeline & Deals": [
+            ("🔢 All open deals — count & value", "How many deals are currently open and what is the total pipeline value?"),
+            ("⛏️ Mining pipeline this quarter", "How is our pipeline looking for Mining this quarter?"),
+            ("🏗️ Won vs Dead deals comparison", "Show me how many deals are Won vs Dead vs On Hold."),
+        ],
+        "💰 Revenue & Billing": [
+            ("💵 Total receivable outstanding", "What is our total outstanding receivable right now?"),
+            ("📊 Revenue & collection rate", "What is our revenue collection rate and total receivable outstanding?"),
+            ("⚡ Renewables billing status", "What is the billing status for Renewables work orders?"),
+        ],
+        "⚙️ Operations": [
+            ("🔄 Ongoing vs completed work orders", "How many work orders are ongoing vs completed across all sectors?"),
+            ("⏸️ Paused or stuck projects", "Which projects are paused or stuck right now?"),
+            ("⚖️ Powerline vs Renewables briefing", "Give me a leadership update comparing Powerline and Renewables."),
+        ],
+        "🌐 Sector & Strategy": [
+            ("🌐 All-sector executive breakdown", "Give me an executive breakdown across all business sectors."),
+            ("📉 Weakest performing sector?", "Which sector has the lowest pipeline conversion rate?"),
+        ],
+        "🔍 Search & Data Health": [
+            ("🛡️ Data health & caveats audit", "How reliable is our data right now? Any caveats?"),
+            ("🔎 Search a deal or client", "What is the status of the Sakura deal?"),
+        ],
+    }
+    for group_label, prompts in prompt_groups.items():
+        with st.expander(group_label, expanded=False):
+            for label, qp in prompts:
+                if st.button(label, key=f"btn_{label}", use_container_width=True):
+                    st.session_state["queued_prompt"] = qp
+                    st.rerun()
 
     st.markdown("---")
     # Export Briefing
