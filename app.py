@@ -267,8 +267,33 @@ if "messages" not in st.session_state:
 
 # Sidebar
 with st.sidebar:
-    st.image("https://img.icons8.com/isometric/100/combo-chart.png", width=60)
-    st.subheader("Executive Control Panel")
+    st.markdown("""
+    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+        <div style="background: linear-gradient(135deg, #6366F1 0%, #4338CA 100%); width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);">
+            🦅
+        </div>
+        <div>
+            <div style="font-weight: 800; font-size: 1.1rem; color: #F8FAFC; letter-spacing: -0.3px;">Skylark BI Agent</div>
+            <div style="font-size: 0.72rem; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.6px; font-weight: 600;">Executive Suite</div>
+        </div>
+    </div>
+    
+    <div style="background: #111827; border: 1px solid #1F2937; border-radius: 12px; padding: 12px 14px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+        <div style="font-size: 0.7rem; color: #64748B; text-transform: uppercase; font-weight: 700; letter-spacing: 0.6px; margin-bottom: 8px;">System Telemetry</div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 5px;">
+            <span style="color: #94A3B8;">monday.com API:</span>
+            <span style="color: #34D399; font-weight: 700;">● Active (v2)</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 5px;">
+            <span style="color: #94A3B8;">AI Model:</span>
+            <span style="color: #818CF8; font-weight: 700;">Llama 3.3 70B</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
+            <span style="color: #94A3B8;">Cache Policy:</span>
+            <span style="color: #FBBF24; font-weight: 700;">2-Min TTL</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
     
     col_a, col_b = st.columns(2)
     with col_a:
@@ -279,10 +304,10 @@ with st.sidebar:
     with col_b:
         show_debug = st.checkbox("Show Tools", value=False)
     
-    st.caption("⚡ Boards refresh from monday.com on a 2-min in-memory cache.")
     st.markdown("---")
     
     st.subheader("💡 Leadership Quick Prompts")
+    st.caption("Click any query to execute an instant executive briefing:")
     quick_prompts = [
         ("⚖️ Compare Powerline vs Renewables", "Give me a leadership update comparing Powerline and Renewables."),
         ("💰 Revenue & Receivables Overview", "What is our revenue collection rate and total receivable outstanding?"),
