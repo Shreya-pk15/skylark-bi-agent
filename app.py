@@ -120,7 +120,7 @@ st.markdown("""
         letter-spacing: -0.3px;
     }
     
-    /* User Message Styling: Shift to Right with Royal Indigo Gradient */
+    /* User Message Styling: Shift to Right with Dynamic Bubble Width */
     [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]),
     [data-testid="stChatMessage"]:has([aria-label*="user" i]),
     [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) {
@@ -131,11 +131,13 @@ st.markdown("""
         border-radius: 18px 18px 4px 18px !important;
         margin-left: auto !important;
         margin-right: 0 !important;
-        max-width: 82% !important;
+        width: fit-content !important;
+        max-width: 80% !important;
+        padding: 12px 18px !important;
         box-shadow: 0 4px 15px rgba(79, 70, 229, 0.25) !important;
     }
 
-    /* Assistant Message Styling: Left aligned with sleek Obsidian Card */
+    /* Assistant Message Styling: Left aligned with Dynamic Bubble Width */
     [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"]),
     [data-testid="stChatMessage"]:has([aria-label*="assistant" i]),
     [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]) {
@@ -146,8 +148,14 @@ st.markdown("""
         border-radius: 18px 18px 18px 4px !important;
         margin-right: auto !important;
         margin-left: 0 !important;
+        width: fit-content !important;
         max-width: 92% !important;
+        padding: 14px 20px !important;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    [data-testid="stChatMessageContent"] {
+        width: fit-content !important;
     }
     
     /* Sidebar Polish */
