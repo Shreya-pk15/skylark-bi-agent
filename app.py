@@ -39,7 +39,7 @@ st.set_page_config(
 # Custom Executive Styling
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
     
     html, body, [class*="css"] {
         font-family: 'Plus Jakarta Sans', sans-serif;
@@ -47,20 +47,20 @@ st.markdown("""
     
     /* Main Header */
     .main-header {
-        background: linear-gradient(135deg, #0F172A 0%, #1E1B4B 50%, #312E81 100%);
-        padding: 26px 30px;
-        border-radius: 18px;
-        color: white;
+        background: linear-gradient(135deg, #090D16 0%, #111827 50%, #1E1B4B 100%);
+        padding: 28px 32px;
+        border-radius: 20px;
+        color: #F8FAFC;
         margin-bottom: 24px;
-        box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.3), 0 8px 10px -6px rgba(15, 23, 42, 0.3);
-        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5), 0 0 20px rgba(99, 102, 241, 0.15);
+        border: 1px solid rgba(99, 102, 241, 0.3);
     }
     
     .main-header h1 {
         color: #FFFFFF !important;
-        font-weight: 700;
-        font-size: 1.95rem;
-        margin: 0 0 6px 0;
+        font-weight: 800;
+        font-size: 2.0rem;
+        margin: 0 0 8px 0;
         display: flex;
         align-items: center;
         gap: 12px;
@@ -68,8 +68,8 @@ st.markdown("""
     }
     
     .main-header p {
-        color: #C7D2FE !important;
-        font-size: 0.95rem;
+        color: #A5B4FC !important;
+        font-size: 0.96rem;
         margin: 0;
         line-height: 1.5;
     }
@@ -77,92 +77,98 @@ st.markdown("""
     .status-badge {
         display: inline-flex;
         align-items: center;
-        background: rgba(16, 185, 129, 0.15);
-        border: 1px solid rgba(16, 185, 129, 0.45);
-        color: #10B981;
-        padding: 5px 12px;
+        background: rgba(16, 185, 129, 0.12);
+        border: 1px solid rgba(16, 185, 129, 0.5);
+        color: #34D399;
+        padding: 6px 14px;
         border-radius: 20px;
         font-size: 0.75rem;
         font-weight: 700;
-        letter-spacing: 0.6px;
+        letter-spacing: 0.8px;
+        box-shadow: 0 0 12px rgba(16, 185, 129, 0.2);
     }
     
     /* KPI Ribbon Cards */
     .kpi-card {
-        background: #FFFFFF;
-        border: 1px solid #E2E8F0;
+        background: #111827;
+        border: 1px solid #1F2937;
         border-radius: 14px;
         padding: 16px 20px;
         text-align: left;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.02), 0 1px 2px rgba(0,0,0,0.04);
-        transition: transform 0.15s ease, box-shadow 0.15s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     }
     .kpi-card:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0,0,0,0.06);
+        border-color: #6366F1;
+        box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2);
     }
     
     .kpi-title {
         font-size: 0.72rem;
         text-transform: uppercase;
-        color: #64748B;
+        color: #94A3B8;
         font-weight: 700;
-        letter-spacing: 0.6px;
-        margin-bottom: 4px;
+        letter-spacing: 0.8px;
+        margin-bottom: 6px;
     }
     
     .kpi-val {
-        font-size: 1.25rem;
+        font-size: 1.3rem;
         font-weight: 800;
-        color: #0F172A;
+        color: #F8FAFC;
         letter-spacing: -0.3px;
     }
     
-    /* User Message Styling: Shift to Right with Distinct Bubble */
+    /* User Message Styling: Shift to Right with Royal Indigo Gradient */
     [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]),
     [data-testid="stChatMessage"]:has([aria-label*="user" i]),
     [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) {
         flex-direction: row-reverse !important;
-        background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%) !important;
-        border: 1px solid #C7D2FE !important;
+        background: linear-gradient(135deg, #3730A3 0%, #312E81 100%) !important;
+        border: 1px solid #4F46E5 !important;
+        color: #FFFFFF !important;
         border-radius: 18px 18px 4px 18px !important;
         margin-left: auto !important;
         margin-right: 0 !important;
         max-width: 82% !important;
-        box-shadow: 0 2px 6px rgba(79, 70, 229, 0.08) !important;
+        box-shadow: 0 4px 15px rgba(79, 70, 229, 0.25) !important;
     }
 
-    /* Assistant Message Styling: Left aligned with subtle modern card */
+    /* Assistant Message Styling: Left aligned with sleek Obsidian Card */
     [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"]),
     [data-testid="stChatMessage"]:has([aria-label*="assistant" i]),
     [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]) {
         flex-direction: row !important;
-        background: #FFFFFF !important;
-        border: 1px solid #E2E8F0 !important;
-        border-left: 4px solid #4F46E5 !important;
+        background: #111827 !important;
+        border: 1px solid #1F2937 !important;
+        border-left: 4px solid #6366F1 !important;
         border-radius: 18px 18px 18px 4px !important;
         margin-right: auto !important;
         margin-left: 0 !important;
         max-width: 92% !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
     }
     
     /* Sidebar Polish */
     section[data-testid="stSidebar"] {
-        background-color: #F8FAFC;
-        border-right: 1px solid #E2E8F0;
+        background-color: #0B0F19;
+        border-right: 1px solid #1F2937;
     }
     
     .stButton>button {
         border-radius: 10px;
         font-weight: 600;
-        border: 1px solid #CBD5E1;
-        transition: all 0.2s;
+        background: #111827;
+        color: #E2E8F0;
+        border: 1px solid #1F2937;
+        transition: all 0.2s ease;
     }
     .stButton>button:hover {
-        border-color: #4F46E5;
-        color: #4F46E5;
-        background-color: #EEF2FF;
+        border-color: #6366F1;
+        color: #FFFFFF;
+        background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%);
+        box-shadow: 0 0 12px rgba(99, 102, 241, 0.3);
     }
 </style>
 """, unsafe_allow_html=True)
