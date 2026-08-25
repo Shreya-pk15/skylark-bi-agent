@@ -45,73 +45,105 @@ st.markdown("""
         font-family: 'Plus Jakarta Sans', sans-serif;
     }
     
+    /* Main Header */
     .main-header {
-        background: linear-gradient(135deg, #1E1B4B 0%, #312E81 50%, #4338CA 100%);
-        padding: 24px;
-        border-radius: 16px;
+        background: linear-gradient(135deg, #0F172A 0%, #1E1B4B 50%, #312E81 100%);
+        padding: 26px 30px;
+        border-radius: 18px;
         color: white;
-        margin-bottom: 20px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 24px;
+        box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.3), 0 8px 10px -6px rgba(15, 23, 42, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.12);
     }
     
     .main-header h1 {
         color: #FFFFFF !important;
         font-weight: 700;
-        font-size: 1.85rem;
-        margin: 0 0 8px 0;
+        font-size: 1.95rem;
+        margin: 0 0 6px 0;
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
+        letter-spacing: -0.5px;
     }
     
     .main-header p {
-        color: #E0E7FF !important;
+        color: #C7D2FE !important;
         font-size: 0.95rem;
         margin: 0;
-        opacity: 0.95;
+        line-height: 1.5;
     }
     
     .status-badge {
         display: inline-flex;
         align-items: center;
-        background: rgba(16, 185, 129, 0.18);
-        border: 1px solid rgba(16, 185, 129, 0.4);
+        background: rgba(16, 185, 129, 0.15);
+        border: 1px solid rgba(16, 185, 129, 0.45);
         color: #10B981;
-        padding: 4px 10px;
+        padding: 5px 12px;
         border-radius: 20px;
         font-size: 0.75rem;
-        font-weight: 600;
-        letter-spacing: 0.5px;
+        font-weight: 700;
+        letter-spacing: 0.6px;
     }
     
+    /* KPI Ribbon Cards */
     .kpi-card {
-        background: #F8FAFC;
+        background: #FFFFFF;
         border: 1px solid #E2E8F0;
-        border-radius: 12px;
-        padding: 14px 18px;
-        text-align: center;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        border-radius: 14px;
+        padding: 16px 20px;
+        text-align: left;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02), 0 1px 2px rgba(0,0,0,0.04);
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .kpi-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.06);
     }
     
     .kpi-title {
-        font-size: 0.75rem;
+        font-size: 0.72rem;
         text-transform: uppercase;
         color: #64748B;
-        font-weight: 600;
-        letter-spacing: 0.5px;
+        font-weight: 700;
+        letter-spacing: 0.6px;
         margin-bottom: 4px;
     }
     
     .kpi-val {
         font-size: 1.25rem;
-        font-weight: 700;
+        font-weight: 800;
         color: #0F172A;
+        letter-spacing: -0.3px;
     }
     
+    /* Chat Message Polish */
     .stChatMessage {
-        border-radius: 12px;
-        margin-bottom: 8px;
+        border-radius: 14px;
+        margin-bottom: 12px;
+        padding: 14px 18px;
+        border: 1px solid #E2E8F0;
+        background-color: #FFFFFF;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+    
+    /* Sidebar Polish */
+    section[data-testid="stSidebar"] {
+        background-color: #F8FAFC;
+        border-right: 1px solid #E2E8F0;
+    }
+    
+    .stButton>button {
+        border-radius: 10px;
+        font-weight: 600;
+        border: 1px solid #CBD5E1;
+        transition: all 0.2s;
+    }
+    .stButton>button:hover {
+        border-color: #4F46E5;
+        color: #4F46E5;
+        background-color: #EEF2FF;
     }
 </style>
 """, unsafe_allow_html=True)
