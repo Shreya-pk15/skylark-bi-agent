@@ -118,14 +118,33 @@ st.markdown("""
         letter-spacing: -0.3px;
     }
     
-    /* Chat Message Polish */
-    .stChatMessage {
-        border-radius: 14px;
-        margin-bottom: 12px;
-        padding: 14px 18px;
-        border: 1px solid #E2E8F0;
-        background-color: #FFFFFF;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    /* User Message Styling: Shift to Right with Distinct Bubble */
+    [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]),
+    [data-testid="stChatMessage"]:has([aria-label*="user" i]),
+    [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) {
+        flex-direction: row-reverse !important;
+        background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%) !important;
+        border: 1px solid #C7D2FE !important;
+        border-radius: 18px 18px 4px 18px !important;
+        margin-left: auto !important;
+        margin-right: 0 !important;
+        max-width: 82% !important;
+        box-shadow: 0 2px 6px rgba(79, 70, 229, 0.08) !important;
+    }
+
+    /* Assistant Message Styling: Left aligned with subtle modern card */
+    [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"]),
+    [data-testid="stChatMessage"]:has([aria-label*="assistant" i]),
+    [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]) {
+        flex-direction: row !important;
+        background: #FFFFFF !important;
+        border: 1px solid #E2E8F0 !important;
+        border-left: 4px solid #4F46E5 !important;
+        border-radius: 18px 18px 18px 4px !important;
+        margin-right: auto !important;
+        margin-left: 0 !important;
+        max-width: 92% !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
     }
     
     /* Sidebar Polish */
@@ -278,7 +297,8 @@ with st.sidebar:
 
 # Chat History Display
 for msg in st.session_state.messages:
-    with st.chat_message(msg["role"]):
+    avatar = "👤" if msg["role"] == "user" else "🦅"
+    with st.chat_message(msg["role"], avatar=avatar):
         st.markdown(msg["content"])
 
 # User Input
@@ -288,10 +308,10 @@ if not active_prompt and "queued_prompt" in st.session_state:
 
 if active_prompt:
     st.session_state.messages.append({"role": "user", "content": active_prompt})
-    with st.chat_message("user"):
+    with st.chat_message("user", avatar="👤"):
         st.markdown(active_prompt)
 
-    with st.chat_message("assistant"):
+    with st.chat_message("assistant", avatar="🦅"):
         with st.spinner("Analyzing monday.com data & reasoning..."):
             try:
                 result = st.session_state.agent.ask(active_prompt)
