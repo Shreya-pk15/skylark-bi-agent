@@ -264,6 +264,7 @@ if "agent" not in st.session_state:
         monday_api_token=get_secret("MONDAY_API_TOKEN"),
         work_orders_board_id=get_secret("MONDAY_WORK_ORDERS_BOARD_ID"),
         deals_board_id=get_secret("MONDAY_DEALS_BOARD_ID"),
+        model=get_secret("GROQ_MODEL"),
     )
 if "messages" not in st.session_state:
     st.session_state.messages = [
@@ -304,7 +305,7 @@ with st.sidebar:
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 5px;">
             <span style="color: #475569;">AI Model:</span>
-            <span style="color: #4F46E5; font-weight: 700;">Llama 3.3 70B</span>
+            <span style="color: #4F46E5; font-weight: 700;">Groq tool-calling model</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
             <span style="color: #475569;">Cache Policy:</span>

@@ -7,8 +7,8 @@ BI tool functions <-> live monday.com data.
 Uses Groq's free API (https://console.groq.com) rather than a paid LLM API —
 Groq's free tier needs no credit card and is generous enough for a student
 project / demo. Groq exposes an OpenAI-compatible chat.completions endpoint,
-so this uses the `openai` Python package pointed at Groq's base_url. Model
-default is Llama 3.3 70B, which supports tool calling well.
+so this uses the `openai` Python package pointed at Groq's base_url. The
+default model is configurable with GROQ_MODEL.
 
 If you ever want to swap back to a paid model (Anthropic, OpenAI, etc.) only
 this file needs to change — agent/tools.py's OPENAI_TOOL_DEFINITIONS already
@@ -34,7 +34,12 @@ from .monday_client import MondayClient
 from .tools import OPENAI_TOOL_DEFINITIONS, call_tool
 
 GROQ_BASE_URL = "https://api.groq.com/openai/v1"
-DEFAULT_MODEL = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
+MODEL_ALIASES = {
+    "llama-3.3-70b-versatile": "openai/gpt-oss-120b",
+    "llama-3.1-8b-instant": "openai/gpt-oss-120b",
+}
+DEFAULT_MODEL = "openai/gpt-oss-120b"
+SUPPORTED_MODELS = {DEFAULT_MODEL, "openai/gpt-oss-20b", "llama-3.3-70b-versatile", "llama-3.1-8b-instant"}
 
 KNOWN_SECTORS = [
     "Mining", "Powerline", "Renewables", "Railways", "Construction",
@@ -125,7 +130,7 @@ class BIAgent:
         monday_api_token: str | None = None,
         work_orders_board_id: str | None = None,
         deals_board_id: str | None = None,
-        model: str = DEFAULT_MODEL,
+        model: str | None = None,
     ):
         api_key = groq_api_key or os.environ.get("GROQ_API_KEY")
         if not api_key:
@@ -137,7 +142,10 @@ class BIAgent:
         self.monday = MondayClient(monday_api_token)
         self.wo_board_id = work_orders_board_id or os.environ["MONDAY_WORK_ORDERS_BOARD_ID"]
         self.deals_board_id = deals_board_id or os.environ["MONDAY_DEALS_BOARD_ID"]
-        self.model = model
+        configured_model = model or os.environ.get("GROQ_MODEL") or DEFAULT_MODEL
+        configured_model = configured_model.strip().strip('"').strip("'")
+        configured_model = MODEL_ALIASES.get(configured_model, configured_model)
+        self.model = configured_model if configured_model in SUPPORTED_MODELS else DEFAULT_MODEL
         self.history: list[dict] = [{"role": "system", "content": SYSTEM_PROMPT}]
 
     def reset(self):

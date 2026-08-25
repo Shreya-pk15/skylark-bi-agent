@@ -50,12 +50,14 @@ resilience and honest caveats over breadth of BI features.
    by a number that's quietly missing 50% of deals.
 
 ## Trade-offs and why
-- **Groq (free tier, Llama 3.3 70B) over a paid LLM API.** Groq's API is
+- **Groq over a paid LLM API.** Groq's API is
   free with no credit card and is OpenAI-tool-call-compatible, so the agent
   needed no architectural changes beyond the tool-schema format and the
   response-parsing loop — `agent/tools.py` keeps both an Anthropic-shaped
   and an OpenAI-shaped tool definition side by side for exactly this kind of
-  swap. Trade-off: a 70B open model is somewhat less reliable at
+  swap. The default `llama-3.1-8b-instant` model is configurable with
+  `GROQ_MODEL`; model availability can change, so deployment should use a
+  model currently enabled for the account. Trade-off: open models can be
   multi-step tool chaining and nuanced clarifying-question judgment than a
   frontier model like Claude or GPT-4-class models; mitigated with an
   explicit, rule-based system prompt (never invent numbers, always call a

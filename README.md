@@ -37,7 +37,7 @@ quarter?") by querying two live monday.com boards — **Work Orders** and
 
 - **`app.py`** — Streamlit chat interface. This is what you deploy/host.
 - **`agent/core.py`** — the agent loop: sends the conversation + tool
-  definitions to the LLM (Groq's free API, Llama 3.3 70B by default),
+  definitions to the LLM (Groq's API, `llama-3.1-8b-instant` by default),
   executes whatever tools it calls, feeds results back, repeats until it
   has a final answer.
 - **`agent/tools.py`** — the actual BI logic (pipeline summary, revenue
