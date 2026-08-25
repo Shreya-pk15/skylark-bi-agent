@@ -47,20 +47,20 @@ st.markdown("""
     
     /* Main Header */
     .main-header {
-        background: linear-gradient(135deg, #090D16 0%, #111827 50%, #1E1B4B 100%);
-        padding: 28px 32px;
-        border-radius: 20px;
-        color: #F8FAFC;
-        margin-bottom: 24px;
-        box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5), 0 0 20px rgba(99, 102, 241, 0.15);
-        border: 1px solid rgba(99, 102, 241, 0.3);
+        background: linear-gradient(135deg, #1E1B4B 0%, #312E81 50%, #4338CA 100%);
+        padding: 26px 30px;
+        border-radius: 18px;
+        color: #FFFFFF;
+        margin-bottom: 22px;
+        box-shadow: 0 10px 25px -5px rgba(49, 46, 129, 0.2), 0 4px 6px -2px rgba(49, 46, 129, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.15);
     }
     
     .main-header h1 {
         color: #FFFFFF !important;
         font-weight: 800;
-        font-size: 2.0rem;
-        margin: 0 0 8px 0;
+        font-size: 1.95rem;
+        margin: 0 0 6px 0;
         display: flex;
         align-items: center;
         gap: 12px;
@@ -68,8 +68,8 @@ st.markdown("""
     }
     
     .main-header p {
-        color: #A5B4FC !important;
-        font-size: 0.96rem;
+        color: #E0E7FF !important;
+        font-size: 0.95rem;
         margin: 0;
         line-height: 1.5;
     }
@@ -77,46 +77,45 @@ st.markdown("""
     .status-badge {
         display: inline-flex;
         align-items: center;
-        background: rgba(16, 185, 129, 0.12);
+        background: rgba(16, 185, 129, 0.2);
         border: 1px solid rgba(16, 185, 129, 0.5);
-        color: #34D399;
-        padding: 6px 14px;
+        color: #10B981;
+        padding: 5px 12px;
         border-radius: 20px;
         font-size: 0.75rem;
         font-weight: 700;
-        letter-spacing: 0.8px;
-        box-shadow: 0 0 12px rgba(16, 185, 129, 0.2);
+        letter-spacing: 0.6px;
     }
     
     /* KPI Ribbon Cards */
     .kpi-card {
-        background: #111827;
-        border: 1px solid #1F2937;
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
         border-radius: 14px;
         padding: 16px 20px;
         text-align: left;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
         transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     }
     .kpi-card:hover {
         transform: translateY(-2px);
         border-color: #6366F1;
-        box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2);
+        box-shadow: 0 6px 16px rgba(99, 102, 241, 0.12);
     }
     
     .kpi-title {
         font-size: 0.72rem;
         text-transform: uppercase;
-        color: #94A3B8;
+        color: #64748B;
         font-weight: 700;
-        letter-spacing: 0.8px;
-        margin-bottom: 6px;
+        letter-spacing: 0.6px;
+        margin-bottom: 4px;
     }
     
     .kpi-val {
-        font-size: 1.3rem;
+        font-size: 1.25rem;
         font-weight: 800;
-        color: #F8FAFC;
+        color: #0F172A;
         letter-spacing: -0.3px;
     }
     
@@ -125,7 +124,7 @@ st.markdown("""
     [data-testid="stChatMessage"]:has([aria-label*="user" i]),
     [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) {
         flex-direction: row-reverse !important;
-        background: linear-gradient(135deg, #3730A3 0%, #312E81 100%) !important;
+        background: linear-gradient(135deg, #4338CA 0%, #3730A3 100%) !important;
         border: 1px solid #4F46E5 !important;
         color: #FFFFFF !important;
         border-radius: 18px 18px 4px 18px !important;
@@ -134,7 +133,12 @@ st.markdown("""
         width: fit-content !important;
         max-width: 80% !important;
         padding: 12px 18px !important;
-        box-shadow: 0 4px 15px rgba(79, 70, 229, 0.25) !important;
+        box-shadow: 0 4px 12px rgba(67, 56, 202, 0.2) !important;
+    }
+    
+    [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) p,
+    [data-testid="stChatMessage"]:has([aria-label*="user" i]) p {
+        color: #FFFFFF !important;
     }
 
     /* Assistant Message Styling: Left aligned with Dynamic Bubble Width */
@@ -142,16 +146,16 @@ st.markdown("""
     [data-testid="stChatMessage"]:has([aria-label*="assistant" i]),
     [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]) {
         flex-direction: row !important;
-        background: #111827 !important;
-        border: 1px solid #1F2937 !important;
-        border-left: 4px solid #6366F1 !important;
+        background: #FFFFFF !important;
+        border: 1px solid #E2E8F0 !important;
+        border-left: 4px solid #4F46E5 !important;
         border-radius: 18px 18px 18px 4px !important;
         margin-right: auto !important;
         margin-left: 0 !important;
         width: fit-content !important;
         max-width: 92% !important;
         padding: 14px 20px !important;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
     }
     
     [data-testid="stChatMessageContent"] {
@@ -160,23 +164,31 @@ st.markdown("""
     
     /* Sidebar Polish */
     section[data-testid="stSidebar"] {
-        background-color: #0B0F19;
-        border-right: 1px solid #1F2937;
+        background-color: #F8FAFC;
+        border-right: 1px solid #E2E8F0;
     }
     
-    .stButton>button {
+    /* Left-Aligned Quick Prompt Buttons */
+    div[data-testid="stSidebar"] .stButton > button {
         border-radius: 10px;
         font-weight: 600;
-        background: #111827;
-        color: #E2E8F0;
-        border: 1px solid #1F2937;
+        background: #FFFFFF;
+        color: #1E293B;
+        border: 1px solid #E2E8F0;
+        text-align: left !important;
+        justify-content: flex-start !important;
+        padding: 10px 14px !important;
+        font-size: 0.84rem !important;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
         transition: all 0.2s ease;
+        margin-bottom: 2px;
     }
-    .stButton>button:hover {
-        border-color: #6366F1;
-        color: #FFFFFF;
-        background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%);
-        box-shadow: 0 0 12px rgba(99, 102, 241, 0.3);
+    div[data-testid="stSidebar"] .stButton > button:hover {
+        border-color: #4F46E5;
+        color: #4F46E5;
+        background: #EEF2FF;
+        box-shadow: 0 2px 6px rgba(79, 70, 229, 0.12);
+        transform: translateX(2px);
     }
 </style>
 """, unsafe_allow_html=True)
@@ -269,28 +281,28 @@ if "messages" not in st.session_state:
 with st.sidebar:
     st.markdown("""
     <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-        <div style="background: linear-gradient(135deg, #6366F1 0%, #4338CA 100%); width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);">
+        <div style="background: linear-gradient(135deg, #4F46E5 0%, #3730A3 100%); width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);">
             🦅
         </div>
         <div>
-            <div style="font-weight: 800; font-size: 1.1rem; color: #F8FAFC; letter-spacing: -0.3px;">Skylark BI Agent</div>
-            <div style="font-size: 0.72rem; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.6px; font-weight: 600;">Executive Suite</div>
+            <div style="font-weight: 800; font-size: 1.1rem; color: #0F172A; letter-spacing: -0.3px;">Skylark BI Agent</div>
+            <div style="font-size: 0.72rem; color: #64748B; text-transform: uppercase; letter-spacing: 0.6px; font-weight: 700;">Executive Suite</div>
         </div>
     </div>
     
-    <div style="background: #111827; border: 1px solid #1F2937; border-radius: 12px; padding: 12px 14px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+    <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; padding: 12px 14px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
         <div style="font-size: 0.7rem; color: #64748B; text-transform: uppercase; font-weight: 700; letter-spacing: 0.6px; margin-bottom: 8px;">System Telemetry</div>
         <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 5px;">
-            <span style="color: #94A3B8;">monday.com API:</span>
-            <span style="color: #34D399; font-weight: 700;">● Active (v2)</span>
+            <span style="color: #475569;">monday.com API:</span>
+            <span style="color: #059669; font-weight: 700;">● Active (v2)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 5px;">
-            <span style="color: #94A3B8;">AI Model:</span>
-            <span style="color: #818CF8; font-weight: 700;">Llama 3.3 70B</span>
+            <span style="color: #475569;">AI Model:</span>
+            <span style="color: #4F46E5; font-weight: 700;">Llama 3.3 70B</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
-            <span style="color: #94A3B8;">Cache Policy:</span>
-            <span style="color: #FBBF24; font-weight: 700;">2-Min TTL</span>
+            <span style="color: #475569;">Cache Policy:</span>
+            <span style="color: #D97706; font-weight: 700;">2-Min TTL</span>
         </div>
     </div>
     """, unsafe_allow_html=True)
