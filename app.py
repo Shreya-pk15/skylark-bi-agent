@@ -351,6 +351,12 @@ for msg in st.session_state.messages:
     avatar = "👤" if msg["role"] == "user" else "🦅"
     with st.chat_message(msg["role"], avatar=avatar):
         st.markdown(msg["content"])
+        if show_debug and msg.get("tool_calls"):
+            with st.expander(f"🛠️ ReAct Agent Tool Invocations ({len(msg['tool_calls'])} calls)", expanded=True):
+                for i, tc in enumerate(msg["tool_calls"], 1):
+                    st.markdown(f"**Step {i}: `{tc.get('tool')}`**")
+                    st.caption(f"Input parameters: `{tc.get('input')}`")
+                    st.json(tc.get("result"))
 
 # User Input
 active_prompt = st.chat_input("Ask a strategic or operational business question...")
@@ -367,11 +373,19 @@ if active_prompt:
             try:
                 result = st.session_state.agent.ask(active_prompt)
                 st.markdown(result["reply"])
-                if show_debug and result.get("tool_calls"):
-                    with st.expander("🛠️ ReAct Agent Tool Invocations"):
-                        st.json(result["tool_calls"])
-                st.session_state.messages.append({"role": "assistant", "content": result["reply"]})
+                tool_calls = result.get("tool_calls", [])
+                if show_debug and tool_calls:
+                    with st.expander(f"🛠️ ReAct Agent Tool Invocations ({len(tool_calls)} calls)", expanded=True):
+                        for i, tc in enumerate(tool_calls, 1):
+                            st.markdown(f"**Step {i}: `{tc.get('tool')}`**")
+                            st.caption(f"Input parameters: `{tc.get('input')}`")
+                            st.json(tc.get("result"))
+                st.session_state.messages.append({
+                    "role": "assistant",
+                    "content": result["reply"],
+                    "tool_calls": tool_calls
+                })
             except Exception as e:
                 err = f"⚠️ Query execution error: `{e}`"
                 st.error(err)
-                st.session_state.messages.append({"role": "assistant", "content": err})
+                st.session_state.messages.append({"role": "assistant", "content": err, "tool_calls": []})
