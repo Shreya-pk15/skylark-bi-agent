@@ -219,7 +219,7 @@ st.markdown("""
 <div class="main-header">
     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
         <h1>🦅 Skylark BI Decision Agent</h1>
-        <span class="status-badge">● LIVE MONDAY.COM SYNC</span>
+        <span class="status-badge">● MONDAY.COM DATA SOURCE</span>
     </div>
     <p>Conversational business intelligence for founders & leadership — real-time pipeline analytics, revenue metrics, and operational performance.</p>
 </div>
@@ -238,7 +238,7 @@ with c2:
     st.markdown("""
     <div class="kpi-card">
         <div class="kpi-title">Tracked Sectors</div>
-        <div class="kpi-val">11 Key Sectors</div>
+        <div class="kpi-val">11 Configured Sectors</div>
     </div>
     """, unsafe_allow_html=True)
 with c3:
@@ -301,11 +301,11 @@ with st.sidebar:
         <div style="font-size: 0.7rem; color: #64748B; text-transform: uppercase; font-weight: 700; letter-spacing: 0.6px; margin-bottom: 8px;">System Telemetry</div>
         <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 5px;">
             <span style="color: #475569;">monday.com API:</span>
-            <span style="color: #059669; font-weight: 700;">● Active (v2)</span>
+            <span style="color: #D97706; font-weight: 700;">● Configured (API v2)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 5px;">
             <span style="color: #475569;">AI Model:</span>
-            <span style="color: #4F46E5; font-weight: 700;">Groq tool-calling model</span>
+            <span style="color: #4F46E5; font-weight: 700;">Groq tool-calling</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
             <span style="color: #475569;">Cache Policy:</span>
